@@ -1,0 +1,388 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ───── Dusty Rose + Forest Green Palette ───── */
+  --color-primary: #DCAE96;
+  --color-primary-light: #EFD5C5;
+  --color-primary-dark: #C1906F;
+
+  --color-secondary: #2D3A30;
+  --color-secondary-light: #4A5D4E;
+  --color-secondary-dark: #1A241C;
+
+  --color-accent: #B88E4B;
+  --color-accent-light: #D4AD6E;
+  --color-accent-dark: #9A7338;
+
+  --color-bg: #FDFBF7;
+  --color-bg-light: #FFFFFF;
+  --color-bg-warm: #F7F3EC;
+
+  --color-text: #333333;
+  --color-text-light: #555555;
+  --color-text-muted: #888888;
+
+  --color-border: #E5DDD3;
+  --color-border-light: #F0EBE3;
+
+  /* ───── Shadows ───── */
+  --shadow-soft: 0 10px 40px -10px rgba(45, 58, 48, 0.10);
+  --shadow-warm: 0 0 50px -12px rgba(220, 174, 150, 0.25);
+  --shadow-card: 0 4px 24px -4px rgba(45, 58, 48, 0.06);
+  --shadow-glow: 0 0 30px rgba(184, 142, 75, 0.2);
+
+  /* ───── Fonts ───── */
+  --font-sans: var(--font-ibm-arabic), var(--font-inter), 'Segoe UI', sans-serif;
+}
+
+/* ───── Base / RTL ───── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  direction: rtl;
+  text-align: right;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ───── Selection ───── */
+::selection {
+  background: var(--color-primary-light);
+  color: var(--color-text);
+}
+
+/* ───── Scrollbar ───── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-warm);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
+}
+
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes pulse-soft {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ───── Animation classes ───── */
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease both;
+}
+
+.animate-slide-in {
+  animation: slideInRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ───── Stagger delays ───── */
+.stagger-1 {
+  animation-delay: 0.08s;
+}
+
+.stagger-2 {
+  animation-delay: 0.16s;
+}
+
+.stagger-3 {
+  animation-delay: 0.24s;
+}
+
+.stagger-4 {
+  animation-delay: 0.32s;
+}
+
+.stagger-5 {
+  animation-delay: 0.40s;
+}
+
+.stagger-6 {
+  animation-delay: 0.48s;
+}
+
+.stagger-7 {
+  animation-delay: 0.56s;
+}
+
+.stagger-8 {
+  animation-delay: 0.64s;
+}
+
+.delay-100 {
+  animation-delay: 0.10s;
+}
+
+.delay-200 {
+  animation-delay: 0.20s;
+}
+
+.delay-300 {
+  animation-delay: 0.30s;
+}
+
+.delay-500 {
+  animation-delay: 0.50s;
+}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════════ */
+
+.fluid-container {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .fluid-container {
+    padding-inline: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fluid-container {
+    padding-inline: 3rem;
+  }
+}
+
+/* ───── Section spacing (mobile-first) ───── */
+.section {
+  padding-block: 3rem;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding-block: 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-block: 7rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   EFFECTS
+   ═══════════════════════════════════════════════ */
+
+/* ───── Glass effect ───── */
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+/* ───── Gradient text ───── */
+.text-gradient-warm {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-sage {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ───── Animated gradient background ───── */
+.animated-gradient-bg {
+  background: linear-gradient(-45deg,
+      rgba(220, 174, 150, 0.06),
+      rgba(253, 251, 247, 0.04),
+      rgba(184, 142, 75, 0.05),
+      rgba(45, 58, 48, 0.03));
+  background-size: 400% 400%;
+  animation: gradientShift 18s ease infinite;
+}
+
+/* ───── Subtle watercolor blob ───── */
+.watercolor-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  opacity: 0.4;
+  animation: pulse-soft 8s ease-in-out infinite;
+}
+
+/* ───── Warm CTA button base ───── */
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-glow);
+  /* mobile-first: generous tap target */
+  padding: 0.875rem 2rem;
+  font-size: 0.9375rem;
+  min-height: 48px;
+}
+
+.btn-cta:hover {
+  background: var(--color-accent-dark);
+  transform: scale(1.03);
+}
+
+.btn-cta:active {
+  transform: scale(0.98);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 2px solid var(--color-primary);
+  color: var(--color-secondary);
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  padding: 0.875rem 2rem;
+  font-size: 0.9375rem;
+  min-height: 48px;
+}
+
+.btn-outline:hover {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary-dark);
+}

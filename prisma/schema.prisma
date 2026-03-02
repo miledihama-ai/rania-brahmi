@@ -1,0 +1,138 @@
+// Prisma schema for the Rania Brahmi platform.
+// To use: npm install prisma @prisma/client
+//         npx prisma generate
+//         npx prisma db push
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Users ───────────────────────────────────────────────────
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  name         String
+  passwordHash String
+  timezone     String       @default("Africa/Tunis")
+  role         Role         @default(STUDENT)
+  enrollments  Enrollment[]
+  bookings     Booking[]
+  shadowNotes  ShadowNote[] // stored encrypted (AES-GCM)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+// ─── Courses & Modules (LMS) ─────────────────────────────────
+model Course {
+  id             String       @id @default(cuid())
+  title          String
+  description    String
+  basePrice      Float
+  isPublished    Boolean      @default(false)
+  muxAssetId     String?      // Mux content protection
+  durationMonths Int          @default(9)
+  modules        Module[]
+  enrollments    Enrollment[]
+  createdAt      DateTime     @default(now())
+}
+
+model Module {
+  id            String   @id @default(cuid())
+  courseId       String
+  course         Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  muxPlaybackId  String?  // Mux signed playback ID
+  duration       Int      // duration in seconds
+  orderIdx       Int      // display order
+  isPreview      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([courseId])
+}
+
+model Enrollment {
+  id          String    @id @default(cuid())
+  userId      String
+  courseId     String
+  user        User      @relation(fields: [userId], references: [id])
+  course      Course    @relation(fields: [courseId], references: [id])
+  progress    Float     @default(0.0) // percentage 0-100
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@unique([userId, courseId])
+  @@index([userId])
+}
+
+// ─── Bookings & Payments ─────────────────────────────────────
+model Booking {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  type        SessionType   // VIDEO | AUDIO | WHATSAPP
+  scheduledAt DateTime      // stored as UTC
+  timezone    String        // client's timezone for display
+  status      BookingStatus @default(PENDING)
+  notes       String?       // encrypted session notes
+  paymentId   String?       @unique
+  payment     Payment?      @relation(fields: [paymentId], references: [id])
+  createdAt   DateTime      @default(now())
+
+  @@index([userId])
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  amount      Float         // price in TND
+  currency    String        @default("TND")
+  status      PaymentStatus @default(PENDING)
+  paymentRef  String?       // external payment reference
+  booking     Booking?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+// ─── Shadow Work Notes (E2E Encrypted) ───────────────────────
+model ShadowNote {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  contentData String   // AES-GCM encrypted ciphertext
+  iv          String   // initialization vector for AES-GCM
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ─── Enums ───────────────────────────────────────────────────
+enum Role {
+  STUDENT
+  COACH
+  ADMIN
+}
+
+enum SessionType {
+  VIDEO
+  AUDIO
+  WHATSAPP
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
