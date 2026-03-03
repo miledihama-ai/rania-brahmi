@@ -99,6 +99,7 @@ export const Hero = () => {
                                 src="/images/coach.jpg"
                                 alt="Rania Brahmi"
                                 fill
+                                sizes="(max-width: 640px) 280px, (max-width: 1024px) 384px, 50vw"
                                 className="object-cover object-top"
                                 priority
                             />
