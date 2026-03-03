@@ -1,7 +1,7 @@
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
-import { BottomNav } from '@/components/layout/BottomNav';
-import { StickyCTA } from '@/components/layout/StickyCTA';
+import { Navbar } from '@/shared/components/layout/Navbar';
+import { Footer } from '@/shared/components/layout/Footer';
+import { BottomNav } from '@/shared/components/layout/BottomNav';
+import { StickyCTA } from '@/shared/components/layout/StickyCTA';
 
 export default function MarketingLayout({
     children,

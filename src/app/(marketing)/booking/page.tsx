@@ -1,4 +1,4 @@
-import { BookingEngine } from '@/components/blocks/BookingEngine';
+import { BookingEngine } from '@/features/booking/components/BookingEngine';
 
 export const metadata = {
     title: 'احجزي استشارتك | Rania Brahmi',

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic, Inter } from "next/font/google";
+import { ToastProvider } from "@/shared/components/ui/ToastProvider";
+import { MotionProvider } from "@/shared/components/providers/MotionProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,7 +36,10 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body className={`${inter.variable} ${ibmArabic.variable} antialiased`}>
-        {children}
+        <MotionProvider>
+          {children}
+        </MotionProvider>
+        <ToastProvider />
       </body>
     </html>
   );
