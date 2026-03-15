@@ -1,7 +1,8 @@
 import { create } from 'zustand';
+import { SESSION_PRICES, type SessionType } from '@/features/booking/lib/vat-calculator';
 
-/** Session types available for booking. */
-export type SessionType = 'VIDEO' | 'AUDIO' | 'WHATSAPP';
+/** Re-export SessionType for consumers. */
+export type { SessionType };
 
 /** A bookable session option with type, pricing, and description. */
 export interface SessionOption {
@@ -12,11 +13,11 @@ export interface SessionOption {
     desc: string;
 }
 
-/** All available session options. */
+/** All available session options — prices derived from SESSION_PRICES (single source of truth). */
 export const SESSION_OPTIONS: SessionOption[] = [
-    { key: 'VIDEO', label: 'فيديو', icon: '🎥', price: 150, desc: 'جلسة وجهاً لوجه عبر الفيديو — الأعمق.' },
-    { key: 'AUDIO', label: 'صوت', icon: '🎧', price: 100, desc: 'جلسة صوتية — خصوصية مطلقة.' },
-    { key: 'WHATSAPP', label: 'واتساب', icon: '💬', price: 60, desc: 'نصي أو صوتي — مرن ومريح.' },
+    { key: 'VIDEO', label: 'فيديو', icon: '🎥', price: SESSION_PRICES.VIDEO, desc: 'جلسة وجهاً لوجه عبر الفيديو — الأعمق.' },
+    { key: 'AUDIO', label: 'صوت', icon: '🎧', price: SESSION_PRICES.AUDIO, desc: 'جلسة صوتية — خصوصية مطلقة.' },
+    { key: 'WHATSAPP', label: 'واتساب', icon: '💬', price: SESSION_PRICES.WHATSAPP, desc: 'نصي أو صوتي — مرن ومريح.' },
 ];
 
 /** Booking store state. */

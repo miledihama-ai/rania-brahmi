@@ -1,189 +1,169 @@
+'use client';
+
 import Link from 'next/link';
+import { useRef } from 'react';
+import { m, useScroll, useTransform, MotionValue } from 'framer-motion';
 
-/** Price structure for paid tiers (null for free). */
-interface TierPrice {
-    from: number;
-    currency: string;
-    note: string;
-}
-
-/** Visual variant controlling card appearance. */
-type TierVariant = 'outline' | 'primary' | 'accent';
-
-/** A pricing tier in the value ladder. */
-interface PricingTier {
+/** Tier definition */
+interface Tier {
     tag: string;
     icon: string;
     title: string;
-    description: string;
-    price: TierPrice | null;
+    desc: string;
+    price: string;
     features: string[];
     cta: string;
     href: string;
-    variant: TierVariant;
+    target?: string;
 }
 
-const tiers: PricingTier[] = [
+const tiers: Tier[] = [
     {
-        tag: 'مجاني',
+        tag: 'الجذور',
         icon: '🌱',
-        title: 'المحتوى المفتوح',
-        description: 'محتوى تعليمي مجاني يساعدك على فهم رحلة الوعي الداخلي وأعمال الظل.',
-        price: null,
+        title: 'استكشاف الجذور',
+        desc: 'جلسة استشارية فردية (60 دقيقة) لتفكيك التحديات الحالية، وتحديد العوائق الخفية.',
+        price: '$150 / الجلسة',
         features: [
-            'مقاطع فيديو تعليمية مجانية',
-            'مقالات ونصوص عمق',
-            'نشرة بريدية أسبوعية',
-            'مجتمع المتعلمين',
-        ],
-        cta: 'استكشفي المحتوى',
-        href: '/#lms',
-        variant: 'outline' as const,
-    },
-    {
-        tag: 'الأكثر طلباً',
-        icon: '✦',
-        title: 'استشارة فردية',
-        description: 'جلسة مع رانيا مباشرة لمعالجة ما تمرين به الآن. مناسبة للحالات الطارئة.',
-        price: { from: 60, currency: 'د.ت', note: 'للجلسة الواحدة' },
-        features: [
-            'جلسة فيديو / صوت / واتساب',
-            'خطة عمل شخصية بعد الجلسة',
-            'سرية تامة ومشفرة',
-            'دعم للمناطق الزمنية المختلفة',
+            'تشخيص دقيق للحالة',
+            'خطة عمل مبدئية',
+            'تسجيل صوتي للجلسة (اختياري)',
         ],
         cta: 'احجزي جلستك',
         href: '/booking',
-        variant: 'primary' as const,
     },
     {
-        tag: 'عميق ومستدام',
-        icon: '🌿',
-        title: 'رحلة 9 أشهر',
-        description: 'دورة النزيف النفسي لتنظيف الصدمات ممتد لتحويل عميق ومستدام. محتوى فيديو + جلسات دورية + متابعة.',
-        price: { from: 1200, currency: 'د.ت', note: 'للبرنامج كاملاً' },
+        tag: 'التحوّل',
+        icon: '🦋',
+        title: 'برنامج التحوّل العميق',
+        desc: 'مرافقة شخصية مكثفة لمدة 3 أشهر، مصممة خصيصًا لكسر الأنماط المعيقة وإحداث نقلة نوعية في جودة حياتك.',
+        price: 'باقة 12 جلسة',
         features: [
-            '+40 وحدة تعليمية بالفيديو',
-            'جلسات شهرية مع رانيا',
-            'مجموعة دعم خاصة',
-            'شهادة إتمام البرنامج',
+            'جلسة أسبوعية مباشرة (90 دقيقة)',
+            'دعم مستمر عبر التليجرام بين الجلسات',
+            'التدريب على أدوات التشافي الذاتي',
+            'مراجعة شاملة نهاية كل شهر',
         ],
-        cta: 'انضمي لبرنامج الرحلة',
-        href: '/booking',
-        variant: 'accent' as const,
+        cta: 'قدمي طلب انضمام',
+        href: '/#contact',
+    },
+    {
+        tag: 'تعلّم ذاتي',
+        icon: '✨',
+        title: 'ورش العمل والدورات',
+        desc: 'محتوى مسجل ومكثف لتعلم أدوات التشافي، وفهم الديناميكيات النفسية في العلاقات وبناء الاستحقاق.',
+        price: 'الأسعار متفاوتة',
+        features: [
+            'وصول مدى الحياة للمحتوى',
+            'ملفات وتطبيقات عملية',
+            'مجتمع داعم للمشتركات',
+        ],
+        cta: 'تصفحي الكنز',
+        href: '/courses',
+        target: '_blank',
     },
 ];
 
-export const ValueLadder = () => (
-    <section id="programs" className="section bg-[var(--color-bg-light)] relative overflow-hidden">
-        {/* Subtle watercolor bg */}
-        <div className="watercolor-blob" style={{ width: '350px', height: '350px', top: '10%', right: '-5%', background: 'radial-gradient(circle, rgba(255,155,155,0.15) 0%, transparent 70%)' }} />
+const StackCard = ({ tier, i, progress, range, targetScale }: { tier: Tier, i: number, progress: MotionValue<number>, range: [number, number], targetScale: number }) => {
+    const containerRef = useRef(null);
+    const scale = useTransform(progress, range, [1, targetScale]);
 
-        <div className="fluid-container relative z-10">
-            {/* Header */}
-            <div className="text-center mb-10 md:mb-14">
-                <span className="inline-block bg-[var(--color-primary-light)] text-[var(--color-secondary)] px-4 py-1.5 rounded-full text-sm font-medium mb-4 animate-fade-in-up">
-                    السلم القيمي
-                </span>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4 animate-fade-in-up stagger-1">
-                    رحلتك تبدأ من هنا
-                </h2>
-                <p className="text-[var(--color-text-muted)] text-base md:text-lg max-w-xl mx-auto animate-fade-in-up stagger-2">
-                    اختاري المستوى المناسب لك. كل خطوة مصممة لتحتضنك وتدعم تحولك الداخلي.
-                </p>
-            </div>
+    // Cards get progressively darker with deeper frosted glass
+    const bgClass = i === 0 ? "bg-white/[0.02]" : i === 1 ? "bg-white/[0.04]" : "bg-white/[0.06]";
+    const borderClass = i === 1 ? "border-[var(--color-primary-dark)]" : "border-white/10";
 
-            {/* Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                {tiers.map((tier, i) => (
-                    <div
-                        key={tier.title}
-                        className={`relative rounded-[1.5rem] md:rounded-[2rem] p-7 md:p-10 flex flex-col transition-all duration-500 hover:-translate-y-2 animate-fade-in-up group overflow-hidden ${tier.variant === 'primary'
-                            ? 'bg-gradient-to-b from-[var(--color-text)] to-[#1a1a1a] text-white shadow-[var(--shadow-warm)] border border-white/10'
-                            : 'glass-card'
-                            }`}
-                        style={{ animationDelay: `${0.1 + i * 0.12}s` }}
-                    >
-                        {/* Decorative glow for primary card */}
-                        {tier.variant === 'primary' && (
-                            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[var(--color-accent)] rounded-full blur-[80px] opacity-30 pointer-events-none transition-opacity duration-500 group-hover:opacity-50" />
-                        )}
-
-                        {/* Tag */}
-                        <span
-                            className={`absolute top-6 left-6 text-xs font-bold px-4 py-1.5 rounded-full tracking-wide shadow-sm ${tier.variant === 'primary'
-                                ? 'bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-light)] text-white'
-                                : 'bg-gradient-to-r from-[var(--color-primary-light)] to-[var(--color-bg)] text-[var(--color-secondary-dark)] border border-white/60'
-                                }`}
-                        >
-                            {tier.tag}
-                        </span>
-
-                        <div className="text-4xl md:text-5xl mb-5 mt-4 transition-transform duration-500 group-hover:scale-110 origin-right">{tier.icon}</div>
-                        <h3 className={`text-2xl md:text-3xl font-extrabold mb-3 tracking-tight ${tier.variant === 'primary' ? 'text-white' : 'text-[var(--color-text)]'}`}>
+    return (
+        <div ref={containerRef} className="min-h-[100dvh] flex items-center justify-center sticky top-0" style={{ perspective: 1000 }}>
+            <m.div
+                style={{ scale, top: `calc(-10dvh + ${i * 40}px)` }}
+                className={`relative flex flex-col w-full max-w-[1000px] min-h-[min(500px,80dvh)] h-auto rounded-[2rem] p-8 md:p-12 border shadow-[0_-10px_50px_-10px_rgba(0,0,0,0.8)] origin-top backdrop-blur-3xl ${bgClass} ${borderClass}`}
+            >
+                <div className="flex justify-between items-start mb-8">
+                    <div className="flex items-center gap-3">
+                        <span className="text-3xl">{tier.icon}</span>
+                        <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--color-text)]">
                             {tier.title}
                         </h3>
-                        <p className={`text-sm md:text-base leading-relaxed mb-8 ${tier.variant === 'primary' ? 'text-white/80' : 'text-[var(--color-text-light)]'}`}>
-                            {tier.description}
-                        </p>
+                    </div>
+                    <span className="text-[var(--color-primary-light)] text-sm md:text-base font-medium tracking-widest px-4 py-1.5 rounded-full border border-[var(--color-primary-dark)] bg-[var(--color-primary-dark)]/20">
+                        {tier.tag}
+                    </span>
+                </div>
 
-                        {/* Price */}
-                        {tier.price ? (
-                            <div className="mb-8">
-                                <span className={`text-xs font-medium uppercase tracking-wider ${tier.variant === 'primary' ? 'text-[var(--color-accent-light)]' : 'text-[var(--color-text-muted)]'}`}>يبدأ من</span>
-                                <div className="flex items-baseline gap-2 mt-1">
-                                    <span className={`text-4xl md:text-5xl font-black tracking-tighter ${tier.variant === 'primary' ? 'text-white' : 'text-[var(--color-secondary-dark)]'}`}>
-                                        {tier.price.from}
-                                    </span>
-                                    <span className={`text-lg font-bold ${tier.variant === 'primary' ? 'text-[var(--color-accent-light)]' : 'text-[var(--color-accent-dark)]'}`}>
-                                        {tier.price.currency}
-                                    </span>
-                                </div>
-                                <p className={`text-xs mt-2 font-medium opacity-80 ${tier.variant === 'primary' ? 'text-white/60' : 'text-[var(--color-text-muted)]'}`}>
-                                    {tier.price.note}
-                                </p>
+                <div className="grid md:grid-cols-2 gap-10 h-full">
+                    {/* Left: Info */}
+                    <div className="flex flex-col justify-between">
+                        <div>
+                            <p className="text-[var(--color-text-light)] text-lg leading-relaxed mb-6">
+                                {tier.desc}
+                            </p>
+                            <div className="text-[var(--color-accent)] font-bold text-xl md:text-2xl font-serif">
+                                {tier.price}
                             </div>
-                        ) : (
-                            <div className="mb-8 flex items-end h-[72px]">
-                                <span className="text-4xl md:text-5xl font-black text-gradient-warm tracking-tighter">مجاني</span>
-                            </div>
-                        )}
+                        </div>
 
-                        {/* Divider */}
-                        <div className={`w-full h-px mb-8 ${tier.variant === 'primary' ? 'bg-white/10' : 'bg-[var(--color-border)]'}`} />
+                        <div className="mt-8">
+                            <Link
+                                href={tier.href}
+                                target={tier.target}
+                                className={i === 1 ? 'btn-cta w-full' : 'btn-cta bg-[var(--color-primary)] text-black w-full'}
+                            >
+                                {tier.cta}
+                            </Link>
+                        </div>
+                    </div>
 
-                        {/* Features */}
-                        <ul className="space-y-4 mb-10 flex-1">
-                            {tier.features.map((f) => (
-                                <li key={f} className="flex items-start gap-4 text-sm md:text-base group/item">
-                                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5 transition-transform group-hover/item:scale-110 shadow-sm ${tier.variant === 'primary'
-                                        ? 'bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-dark)] text-white'
-                                        : 'bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-primary)] text-[var(--color-secondary-dark)]'
-                                        }`}>
-                                        ✓
-                                    </span>
-                                    <span className={`font-medium leading-tight pt-0.5 ${tier.variant === 'primary' ? 'text-white/90' : 'text-[var(--color-text)]'}`}>
-                                        {f}
-                                    </span>
+                    {/* Right: Features */}
+                    <div className="bg-black/20 rounded-2xl p-6 border border-white/5">
+                        <h4 className="text-sm font-semibold text-[var(--color-text-muted)] uppercase tracking-widest mb-6">ماذا يتضمن؟</h4>
+                        <ul className="space-y-4">
+                            {tier.features.map((feature, idx) => (
+                                <li key={idx} className="flex flex-start gap-4 text-[var(--color-text-light)]">
+                                    <span className="text-[var(--color-primary)] mt-0.5">✦</span>
+                                    <span className="leading-relaxed">{feature}</span>
                                 </li>
                             ))}
                         </ul>
-
-                        <Link
-                            href={tier.href}
-                            className={`w-full text-center py-4 rounded-full font-bold transition-all duration-400 text-[15px] min-h-[56px] flex items-center justify-center gap-2 group/btn ${tier.variant === 'primary'
-                                ? 'bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-dark)] hover:from-[var(--color-accent-light)] hover:to-[var(--color-accent)] text-white shadow-[0_8px_20px_rgba(184,142,75,0.4)] hover:shadow-[0_12px_25px_rgba(184,142,75,0.6)] hover:-translate-y-1'
-                                : tier.variant === 'accent'
-                                    ? 'bg-[var(--color-secondary)] hover:bg-[var(--color-secondary-dark)] text-white shadow-[var(--shadow-soft)] hover:-translate-y-1'
-                                    : 'bg-transparent border-2 border-[var(--color-primary)] text-[var(--color-secondary-dark)] hover:bg-[var(--color-primary-light)] hover:border-transparent'
-                                }`}
-                        >
-                            {tier.cta}
-                            <span className="transition-transform duration-300 group-hover/btn:-translate-x-1">←</span>
-                        </Link>
                     </div>
-                ))}
-            </div>
+                </div>
+            </m.div>
         </div>
-    </section>
-);
+    );
+};
+
+export const ValueLadder = () => {
+    const container = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: container,
+        offset: ['start start', 'end end']
+    });
+
+    return (
+        <section id="programs" ref={container} className="relative w-full bg-[var(--color-bg)] pb-32">
+            <div className="fluid-container text-center pt-32 pb-16">
+                <h2 className="text-4xl md:text-6xl font-extrabold text-[var(--color-text)] mb-6">
+                    مستويات <span className="text-gradient-warm">التحوّل</span>
+                </h2>
+                <p className="text-[var(--color-text-muted)] max-w-2xl mx-auto text-lg">
+                    اختر المرحلة التي تناسب جاهزيتك للقفزة القادمة
+                </p>
+            </div>
+
+            <div className="fluid-container">
+                {tiers.map((tier, i) => {
+                    const targetScale = 1 - ((tiers.length - i) * 0.05);
+                    return (
+                        <StackCard
+                            key={i}
+                            i={i}
+                            tier={tier}
+                            progress={scrollYProgress}
+                            range={[i * 0.25, 1]}
+                            targetScale={targetScale}
+                        />
+                    );
+                })}
+            </div>
+        </section>
+    );
+};

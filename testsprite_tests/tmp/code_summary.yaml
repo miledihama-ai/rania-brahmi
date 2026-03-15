@@ -1,0 +1,57 @@
+version: "2"
+type: frontend
+tech_stack:
+  - typescript
+  - next.js 15
+  - tailwind css
+  - turbopack
+routes:
+  - path: /
+    file: src/app/(marketing)/page.tsx
+    auth_required: false
+    description: Home marketing page
+  - path: /login
+    file: src/app/(auth)/login/page.tsx
+    auth_required: false
+    description: User login page
+  - path: /register
+    file: src/app/(auth)/register/page.tsx
+    auth_required: false
+    description: User registration page
+  - path: /booking
+    file: src/app/(marketing)/booking/page.tsx
+    auth_required: false
+    description: Consultation booking page
+features:
+  - name: User Login
+    description: Login with email and password credentials
+    files:
+      - src/app/(auth)/login/page.tsx
+    entry_route: /login
+    user_interactions:
+      - Fill email input field
+      - Fill password input field
+      - Click Login button to submit
+    auth_required: false
+  - name: User Registration
+    description: Register with user details
+    files:
+      - src/app/(auth)/register/page.tsx
+    entry_route: /register
+    user_interactions:
+      - Fill name
+      - Fill email
+      - Fill password
+      - Submit form
+    auth_required: false
+  - name: Booking Consultation
+    description: Book a legal consultation
+    files:
+      - src/app/(marketing)/booking/page.tsx
+    entry_route: /booking
+    user_interactions:
+      - Select date and time
+      - Provide case details
+      - Submit booking request
+    auth_required: false
+known_limitations: []

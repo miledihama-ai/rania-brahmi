@@ -16,15 +16,16 @@ export const PressScale = ({
     scale = 0.95,
     as = 'div',
 }: PressScaleProps) => {
+    const Component = as === 'button' ? m.button : as === 'a' ? m.a : m.div;
+
     return (
-        <m.div
+        <Component
             whileTap={{ scale }}
             whileHover={{ scale: 1.02 }}
             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
             className={className}
-            role={as === 'button' ? 'button' : undefined}
         >
             {children}
-        </m.div>
+        </Component>
     );
 };

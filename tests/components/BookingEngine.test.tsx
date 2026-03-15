@@ -1,7 +1,14 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BookingEngine } from '@/features/booking/components/BookingEngine';
 import { useBookingStore } from '@/features/booking/store/useBookingStore';
+
+// Mock Next.js App Router
+vi.mock('next/navigation', () => ({
+    useRouter: () => ({ push: vi.fn(), replace: vi.fn(), prefetch: vi.fn() }),
+    usePathname: () => '/',
+    useSearchParams: () => new URLSearchParams(),
+}));
 
 describe('BookingEngine Component (Zustand)', () => {
     beforeEach(() => {

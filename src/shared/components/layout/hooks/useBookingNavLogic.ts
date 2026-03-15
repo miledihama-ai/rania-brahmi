@@ -13,7 +13,16 @@ export const useBookingNavLogic = () => {
     const session = getSelectedSession();
 
     useEffect(() => {
-        const onScroll = () => setVisible(window.scrollY > 600);
+        let ticking = false;
+        const onScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    setVisible(window.scrollY > 600);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
     }, []);

@@ -1,4 +1,3 @@
-'use client';
 
 /** A client testimonial with name, location, rating, and review text. */
 interface Testimonial {
@@ -53,7 +52,7 @@ export const SocialProof = () => (
 
         <div className="fluid-container relative z-10">
             <div className="text-center mb-10 md:mb-14">
-                <span className="inline-block bg-[var(--color-primary-light)] text-[var(--color-secondary)] px-4 py-1.5 rounded-full text-sm font-medium mb-4 animate-fade-in-up">
+                <span className="inline-block bg-[var(--color-primary)] text-black px-4 py-1.5 rounded-full text-sm font-bold mb-4 animate-fade-in-up">
                     شهادات العميلات
                 </span>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4 animate-fade-in-up stagger-1">
@@ -67,8 +66,8 @@ export const SocialProof = () => (
             {/* Trust badges */}
             <div className="grid grid-cols-3 gap-4 max-w-sm mx-auto mb-10 md:mb-14 animate-fade-in-up stagger-3">
                 {trustBadges.map(({ value, label }) => (
-                    <div key={label} className="text-center bg-white rounded-2xl py-4 px-3 shadow-[var(--shadow-card)] border border-[var(--color-border-light)]">
-                        <div className="text-xl md:text-2xl font-bold text-[var(--color-accent)]">{value}</div>
+                    <div key={label} className="text-center glass-card border-[var(--color-border-light)] py-4 px-3 shadow-[var(--shadow-card)]">
+                        <div className="text-xl md:text-2xl font-bold text-[var(--color-primary)]">{value}</div>
                         <div className="text-[10px] md:text-xs text-[var(--color-text-muted)] mt-1">{label}</div>
                     </div>
                 ))}
@@ -79,7 +78,7 @@ export const SocialProof = () => (
                 {testimonials.map((t, i) => (
                     <div
                         key={t.name}
-                        className="glass-card p-6 md:p-8 hover:-translate-y-1 animate-fade-in-up group"
+                        className="glass-card p-6 md:p-8 active:scale-[0.98] transition-transform animate-fade-in-up group"
                         style={{ animationDelay: `${0.15 + i * 0.1}s` }}
                     >
                         {/* Quote icon watermark */}
@@ -102,7 +101,7 @@ export const SocialProof = () => (
                             </div>
                             <div>
                                 <p className="font-bold text-[var(--color-text)] text-[15px]">{t.name}</p>
-                                <p className="text-[13px] text-[var(--color-text-muted)] font-medium mt-0.5">{t.location}</p>
+                                <p className="text-[13px] text-[var(--color-text-light)] opacity-90 font-medium mt-0.5">{t.location}</p>
                             </div>
                         </div>
                     </div>

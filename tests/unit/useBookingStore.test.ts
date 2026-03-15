@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useBookingStore, SESSION_OPTIONS } from '@/features/booking/store/useBookingStore';
-import { useFAQLogic } from '@/features/marketing/hooks/useFAQLogic';
 
 /**
  * Unit tests for the booking store (which useBookingLogic wraps).

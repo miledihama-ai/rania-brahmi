@@ -3,19 +3,20 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { m } from 'framer-motion';
+import { Home, Layers, Calendar, UserRound } from 'lucide-react';
 
 /** A navigation item in the bottom bar. */
 interface NavItem {
-    icon: string;
+    icon: React.ReactNode;
     label: string;
     href: string;
 }
 
 const navItems: NavItem[] = [
-    { icon: '🏠', label: 'الرئيسية', href: '/' },
-    { icon: '📚', label: 'البرامج', href: '/#programs' },
-    { icon: '📅', label: 'الاستشارات', href: '/booking' },
-    { icon: '👩‍💼', label: 'عن رانيا', href: '/#about' },
+    { icon: <Home strokeWidth={1} size={24} />, label: 'الرئيسية', href: '/' },
+    { icon: <Layers strokeWidth={1} size={24} />, label: 'البرامج', href: '/#programs' },
+    { icon: <Calendar strokeWidth={1} size={24} />, label: 'الاستشارات', href: '/booking' },
+    { icon: <UserRound strokeWidth={1} size={24} />, label: 'عن رانيا', href: '/#about' },
 ];
 
 export const BottomNav = () => {
@@ -27,7 +28,7 @@ export const BottomNav = () => {
             <div className="absolute inset-0 glass border-t border-white/20 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]" />
 
             {/* Added extra padding for the safe area at the bottom of modern phones */}
-            <div className="relative grid grid-cols-4 h-[72px] items-center pb-2">
+            <div className="relative grid grid-cols-4 items-center pb-2" style={{ height: 'var(--bottom-nav-height, 72px)', ['--bottom-nav-height' as string]: '72px' }}>
                 {navItems.map((item) => {
                     const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href.replace('/#', '/')));
 

@@ -7,7 +7,7 @@ import { useBookingLogic } from '@/features/booking/hooks/useBookingLogic';
  * All logic is handled by `useBookingLogic`. This component only renders.
  */
 export const BookingEngine = () => {
-    const { sessions, selectedType, currentSession, isSubmitting, onSelectType } = useBookingLogic();
+    const { sessions, selectedType, currentSession, isSubmitting, onSelectType, onSubmit } = useBookingLogic();
 
     return (
         <div className="max-w-2xl mx-auto animate-fade-in-up">
@@ -21,8 +21,8 @@ export const BookingEngine = () => {
                             id={`session-${s.label}`}
                             onClick={() => onSelectType(s.key)}
                             className={`relative rounded-[1.25rem] md:rounded-[1.5rem] p-4 md:p-6 text-center transition-all duration-400 min-h-[110px] md:min-h-[130px] flex flex-col items-center justify-center gap-2 overflow-hidden outline-none ${isSelected
-                                ? 'bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-dark)] text-white shadow-[0_10px_30px_-10px_rgba(184,142,75,0.6)] scale-[1.02] border border-white/20'
-                                : 'bg-white/80 backdrop-blur-md border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-primary)] hover:bg-white hover:shadow-[var(--shadow-card)] hover:-translate-y-1'
+                                ? 'bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] text-black shadow-[0_10px_30px_-10px_rgba(212,175,55,0.4)] scale-[1.02] border border-[var(--color-primary-light)]/30'
+                                : 'bg-white/5 backdrop-blur-md border border-white/10 text-[var(--color-text)] hover:border-[var(--color-primary)] hover:bg-white/10 hover:shadow-[var(--shadow-card)] hover:-translate-y-1'
                                 }`}
                         >
                             {/* Selected glow effect */}
@@ -73,6 +73,7 @@ export const BookingEngine = () => {
                 <div className="relative z-10">
                     <button
                         id="book-now-cta"
+                        onClick={onSubmit}
                         disabled={isSubmitting}
                         className="btn-cta w-full text-center text-lg shadow-[var(--shadow-warm)] disabled:opacity-70 disabled:hover:transform-none"
                     >

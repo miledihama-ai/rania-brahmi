@@ -46,12 +46,12 @@ const services: ServiceItem[] = [
 ];
 
 export const Services = () => (
-    <section id="services" className="section bg-[var(--color-text)] relative overflow-hidden">
+    <section id="services" className="section bg-[var(--color-bg)] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 animated-gradient-bg" />
 
         <div className="fluid-container relative z-10">
             <div className="text-center mb-10 md:mb-14">
-                <span className="inline-block bg-[var(--color-secondary-dark)] text-[var(--color-primary-light)] px-4 py-1.5 rounded-full text-sm font-medium mb-4 animate-fade-in-up">
+                <span className="inline-block bg-[var(--color-primary)] text-black px-4 py-1.5 rounded-full text-sm font-bold mb-4 animate-fade-in-up">
                     ماذا أقدّم لكِ
                 </span>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 animate-fade-in-up stagger-1">
@@ -66,17 +66,17 @@ export const Services = () => (
                 {services.map((service, i) => (
                     <div
                         key={service.title}
-                        className="relative rounded-[1.5rem] md:rounded-[2rem] overflow-hidden group animate-fade-in-up shadow-[var(--shadow-card)] transition-transform duration-500 hover:-translate-y-2 hover:shadow-[var(--shadow-warm)]"
+                        className="relative rounded-[1.5rem] md:rounded-[2rem] overflow-hidden group animate-fade-in-up shadow-[var(--shadow-card)] transition-transform duration-300 active:scale-[0.98] md:hover:-translate-y-2 md:hover:shadow-[var(--shadow-warm)]"
                         style={{ animationDelay: `${0.1 + i * 0.12}s` }}
                     >
-                        {/* Background gradient (always slightly visible, intensifies on hover) */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-80 group-hover:opacity-100 transition-opacity duration-500`} />
+                        {/* Background gradient */}
+                        <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-90`} />
 
                         {/* Inner stroke effect for premium feel */}
                         <div className="absolute inset-0 border border-white/20 rounded-[1.5rem] md:rounded-[2rem] pointer-events-none" />
 
                         <div className="relative p-8 md:p-10 flex flex-col h-full min-h-[400px] md:min-h-[460px]">
-                            <div className="text-5xl md:text-6xl mb-6 transition-transform duration-500 group-hover:scale-110 origin-right">{service.icon}</div>
+                            <div className="text-5xl md:text-6xl mb-6 transition-transform duration-300 md:group-hover:scale-110 origin-right">{service.icon}</div>
                             <p className="text-[11px] font-bold uppercase tracking-widest text-white/70 mb-2">{service.subtitle}</p>
                             <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-5">{service.title}</h3>
                             <p className="text-white/80 text-[15px] leading-relaxed mb-8 flex-1">{service.description}</p>

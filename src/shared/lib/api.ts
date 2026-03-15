@@ -1,4 +1,9 @@
-import toast from 'react-hot-toast';
+/** Lazy toast — only loads in browser, no-ops on server. */
+const showToast = (msg: string) => {
+    if (typeof window !== 'undefined') {
+        import('react-hot-toast').then((mod) => mod.default.error(msg));
+    }
+};
 
 /** Standard API error response structure. */
 interface ApiErrorResponse {
@@ -40,7 +45,7 @@ export async function safeFetch<T>(
                 errorData.error ||
                 getDefaultErrorMessage(res.status);
 
-            toast.error(message);
+            showToast(message);
             console.error(`[API Error] ${res.status} ${url}: `, errorData);
             return null;
         }
@@ -49,7 +54,7 @@ export async function safeFetch<T>(
         return data;
     } catch (err) {
         const message = customErrorMsg || 'حدث خطأ في الاتصال. تأكدي من اتصال الإنترنت وحاولي مرة أخرى.';
-        toast.error(message);
+        showToast(message);
         console.error(`[Network Error] ${url}: `, err);
         return null;
     }

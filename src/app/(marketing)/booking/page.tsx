@@ -12,7 +12,7 @@ export default function BookingPage() {
             <div className="fluid-container relative z-10">
                 {/* Header */}
                 <div className="text-center mb-10 md:mb-14">
-                    <span className="inline-block bg-[var(--color-primary-light)] text-[var(--color-secondary)] px-4 py-1.5 rounded-full text-sm font-medium mb-4 animate-fade-in-up">
+                    <span className="inline-block bg-[var(--color-primary)] text-black px-4 py-1.5 rounded-full text-sm font-bold mb-4 animate-fade-in-up">
                         احجزي جلستك
                     </span>
                     <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4 animate-fade-in-up stagger-1">
@@ -35,20 +35,20 @@ export default function BookingPage() {
                     ].map((item, i) => (
                         <div
                             key={item.title}
-                            className="bg-white rounded-2xl p-4 md:p-5 shadow-[var(--shadow-card)] border border-[var(--color-border-light)] animate-fade-in-up"
+                            className="glass-card p-4 md:p-5 shadow-[var(--shadow-card)] border border-white/5 animate-fade-in-up"
                             style={{ animationDelay: `${0.3 + i * 0.08}s` }}
                         >
-                            <div className="text-xl md:text-2xl mb-2">{item.icon}</div>
-                            <div className="font-semibold text-[var(--color-text)] text-xs md:text-sm">{item.title}</div>
+                            <div className="text-xl md:text-2xl mb-2 filter saturate-[0.8]">{item.icon}</div>
+                            <div className="font-bold text-[var(--color-primary)] text-xs md:text-sm">{item.title}</div>
                             <div className="text-[10px] md:text-xs text-[var(--color-text-muted)] mt-1">{item.desc}</div>
                         </div>
                     ))}
                 </div>
 
                 {/* Disclaimer */}
-                <div className="mt-8 md:mt-10 bg-[var(--color-primary-light)] border border-[var(--color-primary)] rounded-2xl p-4 md:p-5 text-center animate-fade-in-up stagger-6">
-                    <p className="text-[var(--color-text-light)] text-xs md:text-sm">
-                        <strong>⚠️ تنبيه:</strong> الاستشارات المقدمة استشارية تطويرية وليست بديلاً عن العلاج الطبي النفسي السريري.
+                <div className="mt-8 md:mt-10 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 rounded-2xl p-4 md:p-5 text-center animate-fade-in-up stagger-6">
+                    <p className="text-[var(--color-text-light)] text-xs md:text-sm leading-relaxed">
+                        <strong className="text-[var(--color-primary)]">⚠️ تنبيه:</strong> الاستشارات المقدمة استشارية تطويرية وليست بديلاً عن العلاج الطبي النفسي السريري.
                     </p>
                 </div>
             </div>

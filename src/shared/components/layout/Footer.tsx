@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Logo } from '@/shared/components/ui/Logo';
 
 /** A single link item in the footer. */
 interface FooterLink {
@@ -31,17 +32,14 @@ const footerLinks: FooterLinks = {
 };
 
 export const Footer = () => (
-    <footer className="bg-[var(--color-text)] text-[var(--color-bg)]">
+    <footer className="bg-[var(--color-bg)] text-white">
         <div className="fluid-container py-12 md:py-16">
             {/* Top */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-[var(--color-secondary-dark)]">
                 {/* Brand */}
                 <div className="sm:col-span-2 md:col-span-1">
-                    <div className="flex items-center gap-2 mb-4">
-                        <span className="w-10 h-10 rounded-full bg-[var(--color-accent)] flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                            R
-                        </span>
-                        <span className="font-bold text-2xl text-white">Rania Brahmi</span>
+                    <div className="mb-6">
+                        <Logo variant="horizontal" />
                     </div>
                     <p className="text-[var(--color-primary-light)] text-sm leading-relaxed">
                         مساحة آمنة للتشافي والنمو الداخلي. برامج متخصصة ورحلات تطويرية ممتدة.
@@ -93,7 +91,7 @@ export const Footer = () => (
 
             {/* Bottom bar */}
             <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-3 text-[var(--color-text-muted)] text-xs">
-                <p>© {new Date().getFullYear()} Rania Brahmi. جميع الحقوق محفوظة.</p>
+                <p suppressHydrationWarning>© {new Date().getFullYear()} Rania Brahmi. جميع الحقوق محفوظة.</p>
                 <p>المنصة استشارية تطويرية وليست بديلاً عن العلاج الطبي السريري.</p>
             </div>
         </div>

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_Arabic, Inter } from "next/font/google";
-import { ToastProvider } from "@/shared/components/ui/ToastProvider";
+import { Cairo, Inter, Amiri } from "next/font/google";
+import { LenisProvider } from '@/shared/components/providers/LenisProvider';
 import { MotionProvider } from "@/shared/components/providers/MotionProvider";
+import { ToastProvider } from "@/shared/components/ui/ToastProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -10,10 +11,17 @@ const inter = Inter({
   display: "swap",
 });
 
-const ibmArabic = IBM_Plex_Sans_Arabic({
-  variable: "--font-ibm-arabic",
+const cairoFont = Cairo({
+  variable: "--font-cairo",
   subsets: ["arabic"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const amiri = Amiri({
+  variable: "--font-amiri",
+  subsets: ["arabic"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
@@ -35,11 +43,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ar" dir="rtl">
-      <body className={`${inter.variable} ${ibmArabic.variable} antialiased`}>
-        <MotionProvider>
-          {children}
-        </MotionProvider>
-        <ToastProvider />
+      <body className={`${inter.variable} ${cairoFont.variable} ${amiri.variable} font-sans pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]`}>
+        <LenisProvider>
+          <MotionProvider>
+            {children}
+            <ToastProvider />
+          </MotionProvider>
+        </LenisProvider>
       </body>
     </html>
   );
