@@ -46,5 +46,14 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.0.18"
+  },
+  "mcpServers": {
+    "TestSprite": {
+      "command": "npx",
+      "args": ["@testsprite/testsprite-mcp@latest"],
+      "env": {
+        "API_KEY": "sk-user-YGI9JoDRC-k8_NI0ZFOIP8HAXv8E6U3UDG0dpNH5fduQ1xH41fmB7ql4uC4LTdWBlH0XlXu8jAynsCTmeIo_cZeRPhZzwsVPln7eCd5NcQD9nlePUvF86VamX-W6i4_nEyU"
+      }
+    }
   }
 }

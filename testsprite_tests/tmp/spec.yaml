@@ -1,0 +1,124 @@
+version: "2"
+type: frontend
+tech_stack:
+  - typescript
+  - next.js 15
+  - tailwind css
+  - turbopack
+  - prisma
+  - postgresql
+
+# ─── Routes ───────────────────────────────────────────────────────────────
+routes:
+  - path: /
+    file: src/app/(marketing)/page.tsx
+    auth_required: false
+    description: الرئيسية للتسويق
+
+  - path: /login
+    file: src/app/(auth)/login/page.tsx
+    auth_required: false
+    description: صفحة تسجيل الدخول
+
+  - path: /register
+    file: src/app/(auth)/register/page.tsx
+    auth_required: false
+    description: صفحة تسجيل الحساب الجديد
+
+  - path: /booking
+    file: src/app/(marketing)/booking/page.tsx
+    auth_required: false
+    description: صفحة حجز استشارة قانونية
+
+# ─── Features (User Interactions & Flows) ────────────────────────────────
+features:
+  - name: User Login
+    description: Allows existing users to log in to the platform
+    files:
+      - src/app/(auth)/login/page.tsx
+      - src/shared/store/useAuthStore.ts
+    entry_route: /login
+    user_interactions:
+      - Fill email input field
+      - Fill password input field
+      - Click Login button to submit
+    auth_required: false
+    test_scenarios:
+      - Successful login with valid credentials
+      - Error message display for invalid credentials
+
+  - name: User Registration
+    description: Allows new users to register for an account
+    files:
+      - src/app/(auth)/register/page.tsx
+      - src/shared/store/useAuthStore.ts
+    entry_route: /register
+    user_interactions:
+      - Fill name
+      - Fill email
+      - Fill password
+      - Submit registration form
+    auth_required: false
+    test_scenarios:
+      - Successful registration
+      - Validation errors for existing email
+
+  - name: Booking Consultation
+    description: Allows users to book a legal consultation session
+    files:
+      - src/app/(marketing)/booking/page.tsx
+      - src/shared/store/useBookingStore.ts
+      - src/shared/components/layout/hooks/useBookingNavLogic.ts
+    entry_route: /booking
+    user_interactions:
+      - Select date and time
+      - Provide case details
+      - Submit booking request
+    auth_required: false
+    test_scenarios:
+      - Booking flow completion
+      - Validation of required fields
+
+# ─── Module: Hierarchy of Laws (PRD) ─────────────────────────────────────
+  - name: Norm Classification & Ingestion Engine
+    description: Allows users to input or select a legal text and classify its rank
+    entry_route: /
+    user_interactions:
+      - Upload legal text or select from list
+      - Classify text rank (Constitution, Organic, Ordinary, Referendum)
+    auth_required: false
+    test_scenarios:
+      - Verify Type metadata field is mandatory
+
+  - name: Domain Compliance Checker
+    description: Cross-references subject matter of ordinary law against reserved domains
+    entry_route: /
+    user_interactions:
+      - Input ordinary law details
+      - System checks for overlap with organic law domains
+      - System generates "Competency Warning" if needed
+    auth_required: false
+    test_scenarios:
+      - Detection of domain overlap
+      - Warning generation
+
+  - name: Validity & Conformity Analysis Dashboard
+    description: Verifies procedural adoption and substantive contradictions
+    entry_route: /
+    user_interactions:
+      - Analyze internal validity (procedural majority)
+      - Analyze external validity (contradictions with higher norms)
+    auth_required: false
+    test_scenarios:
+      - Validation of procedural correctnes
+      - Detection of constitutional violations
+
+  - name: Jurisprudence & Precedent Linking
+    description: Links competency conflicts to historical jurisprudence
+    entry_route: /
+    user_interactions:
+      - View linked jurisprudence for conflicts
+      - Reference Administrative Tribunal decisions
+    auth_required: false
+    test_scenarios:
+      - Correct linking of precedents

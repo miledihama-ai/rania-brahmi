@@ -14,12 +14,12 @@ test.describe('User Journey — Home Page', () => {
     test('navigates to booking page from CTA', async ({ page }) => {
         await page.goto('/');
 
-        // Click booking CTA
-        await page.getByRole('link', { name: /احجزي/ }).first().click();
+// Click booking CTA
+  await page.locator('#hero-cta-primary').click();
 
-        // Should reach the booking page
-        await expect(page).toHaveURL(/booking/);
-        await expect(page.getByText('الخطوة الأولى نحو التحول')).toBeVisible();
+// Should reach the booking page
+  await expect(page).toHaveURL(/booking/);
+  await expect(page.getByRole('heading', { name: 'الخطوة الأولى نحو التحول' })).toBeVisible();
     });
 
     test('value ladder section shows three tiers', async ({ page }) => {
@@ -28,10 +28,10 @@ test.describe('User Journey — Home Page', () => {
         // Scroll to programs section
         await page.locator('#programs').scrollIntoViewIfNeeded();
 
-        // Three tier cards
-        await expect(page.getByText('المحتوى المفتوح')).toBeVisible();
-        await expect(page.getByText('استشارة فردية')).toBeVisible();
-        await expect(page.getByText('رحلة 9 أشهر')).toBeVisible();
+// Three tier cards
+  await expect(page.getByText('استكشاف الجذور')).toBeVisible();
+  await expect(page.getByText('برنامج التحوّل العميق')).toBeVisible();
+  await expect(page.getByText('ورش العمل والدورات')).toBeVisible();
     });
 
     test('FAQ section toggles answers', async ({ page }) => {
@@ -53,23 +53,23 @@ test.describe('User Journey — Booking Flow', () => {
     test('booking page allows session type selection', async ({ page }) => {
         await page.goto('/booking');
 
-        // Default video session selected
-        await expect(page.getByText('150')).toBeVisible();
+// Default video session selected
+  await expect(page.getByText('150', { exact: true })).toBeVisible();
 
-        // Click audio session
-        await page.getByText('صوت').click();
-        await expect(page.getByText('100')).toBeVisible();
+// Click audio session
+  await page.getByText('صوت').click();
+  await expect(page.getByText('100', { exact: true })).toBeVisible();
 
-        // Click whatsapp session
-        await page.getByText('واتساب').click();
-        await expect(page.getByText('60')).toBeVisible();
+  // Click whatsapp session
+  await page.locator('#session-واتساب').click();
+  await expect(page.getByText('60', { exact: true })).toBeVisible();
     });
 
     test('displays security reassurance badges', async ({ page }) => {
         await page.goto('/booking');
 
-        await expect(page.getByText('سرية تامة')).toBeVisible();
-        await expect(page.getByText('دفع آمن')).toBeVisible();
+await expect(page.getByText('سرية تامة')).toBeVisible();
+  await expect(page.getByText('دفع آمن', { exact: true })).toBeVisible();
     });
 });
 
@@ -85,14 +85,20 @@ test.describe('Mobile-Specific Tests', () => {
         await expect(page.getByText('الاستشارات').last()).toBeVisible();
     });
 
-    test('sticky CTA appears after scrolling', async ({ page }) => {
-        await page.goto('/');
+test('sticky CTA appears after scrolling', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
 
-        // Scroll down past hero
-        await page.evaluate(() => window.scrollTo(0, 800));
-        await page.waitForTimeout(500);
+  // Wait for hydration
+  await page.waitForLoadState('networkidle');
 
-        // Sticky CTA should appear
-        await expect(page.locator('#sticky-cta')).toBeVisible();
-    });
+  // Scroll down past hero
+  await page.evaluate(() => window.scrollTo(0, 800));
+  await page.waitForTimeout(1000);
+
+  // Sticky CTA should appear (check if element is attached first)
+  const stickyCta = page.locator('#sticky-cta');
+  await expect(stickyCta).toBeAttached();
+  await expect(stickyCta).toBeVisible();
+});
 });
